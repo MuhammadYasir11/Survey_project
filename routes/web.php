@@ -70,3 +70,5 @@ Route::get('home/list', [HomeController::class,'index'])->name('admin.home.list'
 Route::get('home/dashboard/{id}', [HomeController::class,'dashboard'])->name('admin.home.Surveydashboard');
 Route::get('survey/{id}/edit', [HomeController::class, 'edit'])->name('admin.Survey.edit');
 
+
+

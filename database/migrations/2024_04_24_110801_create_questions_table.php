@@ -15,13 +15,14 @@ return new class extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->string('type');
-            $table->text('text');
-            $table->json('options')->nullable();
+            $table->string('question');
+            $table->string('question_type');
+            $table->text('answer');
             $table->bigInteger('survey_id')->unsigned()->index()->nullable();
+            $table->bigInteger('user_id')->unsigned()->index()->nullable();
             $table->foreign('survey_id')->references('id')->on('survey')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->constrained()->onDelete('cascade');
             $table->timestamps();
-        
         });
     }
 
