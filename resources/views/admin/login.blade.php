@@ -34,7 +34,7 @@
 					  			</div>
 							</div>
 							@error('email')
-								<p class="invalid-feedback">{{ $message}}</p>
+								<p class="invalid-feedback">{{ $message }}</p>
 							@enderror
 				  		</div>
 				  		<div class="input-group mb-3">

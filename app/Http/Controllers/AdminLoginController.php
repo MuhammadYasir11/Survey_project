@@ -15,32 +15,23 @@ class AdminLoginController extends Controller
     {
         $Validator = Validator::make($request->all(),[
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required|'
         ]);
 
         if($Validator->passes()){
-
-            if(Auth::guard('admin')->attempt(['email'=> $request->email,'password' => 
-            $request->password],$request->get('remember')))
-            {
-                $admin = Auth::guard('admin')->user();
-
-                if($admin->role ==2){
-                    return redirect()->route('admin.dashboard');
-                }else{
-                     Auth::guard('admin')->logout();
-                    return redirect()->route('admin.login')->with('error','You are not authorized to access admin panel');
-                }
-
+            if (Auth::guard('admin')->attempt(['email'=> $request->email,'password'=> 
+                $request->password],$request->get('remember'))) {
                 
-            }else{
-                return redirect()->route('admin.login')->with('error','Either Email/Password Is Incorrect');
+                    return redirect()->route('admin.dashboard');
+            } else {
+                return redirect()->route('admin.login')->with('error','Either email/Password is incorrect');
             }
+           
 
         }else{
             return redirect()->route('admin.login')
-            ->withErrors($Validator)
-            ->withInput($request->only('email'));
+                ->withErrors($Validator)
+                ->withInput($request->only('email'));
         }
     }
 
