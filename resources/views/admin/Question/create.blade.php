@@ -94,17 +94,35 @@
                                 </div>
                             </div>
                             <div id="optionsContainer">
-                                <div class="form-group form-check">
+                                <div class="form-group form-check ">
                                     <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                    <input type="text" name="txtoption" id="txtoption" placeholder="Multiple choice"
-                                        class="form-control">
-
+                                    <div class="input-group">
+                                        <input type="text" name="txtoption" id="txtoption" placeholder="Multiple choice"
+                                            class="form-control">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-plus addOption" data-target="#optionsContainer"></i>
+                                            </span>
+                                            <span class="input-group-text">
+                                                <i class="fas fa-minus removeOption" data-target="#optionsContainer"></i>
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group form-check">
+                                <div class="form-group form-check ">
                                     <input type="checkbox" class="form-check-input" id="exampleCheck2">
-                                    <input type="text" id="txtoption1" name="txtoption1" class="form-control"
-                                        placeholder="Multiple choice">
-
+                                    <div class="input-group">
+                                        <input type="text" id="txtoption1" name="txtoption1" class="form-control"
+                                            placeholder="Multiple choice">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-plus addOption" data-target="#optionsContainer"></i>
+                                            </span>
+                                            <span class="input-group-text">
+                                                <i class="fas fa-minus removeOption" data-target="#optionsContainer"></i>
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <button type="button" class="btn btn-primary mt-2" id="addOption">Add Option</button>
@@ -155,6 +173,12 @@
                 </div>
                 <div class="pb-5 pt-3">
                     <button type="submit" class="btn btn-primary">Add Question</button>
+                    @foreach ($questions as $question)
+                        <input type="hidden" name="survey_id" value="{{ $survey->id }}">
+                        <input type="hidden" name="user_id" value="{{ $user->id }}">
+                        <!-- Other code related to displaying questions -->
+                    @endforeach
+
                 </div>
             </form>
         </div>
@@ -193,6 +217,16 @@
                     textbox.className = 'form-control';
                     textbox.placeholder = 'Multiple Choice ' + i;
 
+                     // Plus icon
+                    const plusIcon = document.createElement('span');
+                    plusIcon.className = 'input-group-text addOption';
+                    plusIcon.innerHTML = '<i class="fas fa-plus"></i>';
+
+                    // Minus icon add 
+                    const minusIcon = document.createElement('span');
+                    minusIcon.className = 'input-group-text removeOption';
+                    minusIcon.innerHTML = '<i class="fas fa-minus"></i>';
+
                     // Update the textbox value when answer type is selected
                     answerSelect.addEventListener('change', function() {
                         textbox.value = answerSelect.value;
@@ -200,6 +234,8 @@
 
                     optionWrapper.appendChild(checkbox);
                     optionWrapper.appendChild(textbox);
+                    optionWrapper.appendChild(plusIcon);
+                    optionWrapper.appendChild(minusIcon);
 
                     optionsContainer.appendChild(optionWrapper);
                 }
@@ -420,26 +456,48 @@
         $(document).ready(function() {
             $('#QuestionForm').submit(function(e) {
                 e.preventDefault();
+                var formData = $(this).serializeArray();
+                formData.push({
+                    name: "survey_id",
+                    value: "{{ $survey->id }}"
+                });
+                formData.push({
+                    name: "user_id",
+                    value: "{{ $user->id }}"
+                });
+                console.log(formData);
 
                 $.ajax({
                     type: 'POST',
                     url: '{{ route('question.store') }}', // Replace with your route
-                    data: $(this).serialize(),
-                    success: function(response) {
-                        // Handle success response
-                        console.log(response);
+                    data: formData,
+                    success: function(data) {
+                        // $('#questions').append();
                     },
-                    error: function(xhr, status, error) {
-                        // Handle error response
-                        var errors = xhr.responseJSON.errors;
-                        $.each(errors, function(key, value) {
-                            // Display validation errors
-                            // You can customize this part based on your UI
-                            console.log(key + ': ' + value);
-                        });
-                    }
+
                 });
             });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('.addOption').click(function() {
+                // Clone the form group containing checkbox and text input
+                var newOption = $(this).closest('.form-group').clone();
+
+                // Clear values of cloned input fields
+                newOption.find('input[type="text"]').val('');
+                newOption.find('input[type="checkbox"]').prop('checked', false);
+
+                // Append the cloned form group to the container
+                $(this).closest('.form-group').after(newOption);
+            });
+            // Functionality for removing option
+            $(document).on('click', '.removeOption', function() {
+            if ($('#optionsContainer .form-group').length > 1) {
+                $(this).closest('.form-group').remove();
+            }
+        });
         });
     </script>
 @endsection

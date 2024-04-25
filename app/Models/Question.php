@@ -9,5 +9,11 @@ class Question extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['type', 'text', 'options']; // Add 'type' to the fillable attributes
+    protected $fillable = ['question', 'question_type', 'answer','survey_id','user_id']; // Add 'type' to the fillable attributes
+
+    public function answers()
+	{
+		return $this->hasMany(Answer::class);
+	}
+
 }

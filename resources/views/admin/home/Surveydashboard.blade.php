@@ -22,6 +22,9 @@
             <div class="card-header" style="margin: 0px">
                 <div class="row">
                     <div class="col-sm-12 text-right">
+                        <button type="button" class="btn btn-secondary"
+                            onclick="window.location.href='{{ route('admin.Question.create', ['survey' => $id]) }}'">Edit
+                            Design</button>
                         <button type="button" class="btn btn-secondary">Add more question??</button>
                         <button type="button" class="btn btn-info"
                             onclick="window.location.href='{{ route('admin.Survey.edit', ['id' => $id]) }}'">Edit
