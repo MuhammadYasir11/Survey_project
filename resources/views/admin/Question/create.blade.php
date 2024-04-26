@@ -134,7 +134,7 @@
                                     placeholder="Add text">
 
                             </div>
-                            <button type="button" class="btn btn-primary mt-2" id="addTextbox">Add textbox</button>
+                            {{-- <button type="button" class="btn btn-primary mt-2" id="addTextbox">Add textbox</button> --}}
                         </div>
 
                         <div class="form-group" id="radiobutton" style="display: none;">
@@ -217,7 +217,7 @@
                     textbox.className = 'form-control';
                     textbox.placeholder = 'Multiple Choice ' + i;
 
-                     // Plus icon
+                    // Plus icon
                     const plusIcon = document.createElement('span');
                     plusIcon.className = 'input-group-text addOption';
                     plusIcon.innerHTML = '<i class="fas fa-plus"></i>';
@@ -396,18 +396,6 @@
                 optionsContainer.appendChild(optionWrapper);
             });
 
-            const addTextboxButton = document.getElementById('addTextbox');
-            addTextboxButton.addEventListener('click', function() {
-                const textboxContainer = document.getElementById('textboxContainer');
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.name = 'textboxes[]';
-                input.placeholder = 'Add text';
-                input.className = 'form-control mt-2';
-                input.required = true;
-                textboxContainer.appendChild(input);
-            });
-
             const addRadiobuttonButton = document.getElementById('addRadiobutton');
             addRadiobuttonButton.addEventListener('click', function() {
                 const radioContainer = document.getElementById('radioContainer');
@@ -494,10 +482,10 @@
             });
             // Functionality for removing option
             $(document).on('click', '.removeOption', function() {
-            if ($('#optionsContainer .form-group').length > 1) {
-                $(this).closest('.form-group').remove();
-            }
-        });
+                if ($('#optionsContainer .form-group').length > 1) {
+                    $(this).closest('.form-group').remove();
+                }
+            });
         });
     </script>
 @endsection

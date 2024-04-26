@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Survey;
 use App\Models\Question;
 use App\Models\User;
+use App\Models\Option;
 use Illuminate\Support\Facades\Validator;
 
 class QuestionController extends Controller
@@ -61,17 +62,27 @@ class QuestionController extends Controller
         $question = new Question();
         $question->question = $request->input('question');
         $question->question_type = $request->input('type');
-
-        if ($request->input('type') == 'mcq' || $request->input('type') == 'radio') {
-            $options = $request->only(['txtoption', 'txtoption1']); // Adjust based on your form structure
-            $question->answer = json_encode($options);
-        } else {
-            $question->answer = ''; // For text-box and customRange types
+        if ($request->input('type') == 'text-box') {
+            $question->answer = $request->input('add_text');
+        } elseif ($request->input('type') == 'customRange') {
+            $question->answer = $request->input('range');
         }
-
         $question->survey_id = $request->input('survey_id');
         $question->user_id = $request->input('user_id');
         $question->save();
+
+        if ($request->input('type') == 'mcq' || $request->input('type') == 'radio') {
+            $optionText1 = $request->input('txtoption');
+            $optionText2 = $request->input('txtoption1');
+            
+            // Concatenate both options
+            $options = $optionText1 . ', ' . $optionText2;
+    
+            $option = new Option();
+            $option->option = $options;
+            $option->question_id = $question->id; // Associate option with question
+            $option->save();
+        }
 
         return redirect()->back()->with('success', 'Question created successfully.');
     }
