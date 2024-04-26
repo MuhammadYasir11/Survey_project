@@ -58,33 +58,67 @@ class QuestionController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-
+        // store data to question_type == text
         $question = new Question();
         $question->question = $request->input('question');
         $question->question_type = $request->input('type');
         if ($request->input('type') == 'text-box') {
             $question->answer = $request->input('add_text');
-        } elseif ($request->input('type') == 'customRange') {
-            $question->answer = $request->input('range');
         }
         $question->survey_id = $request->input('survey_id');
         $question->user_id = $request->input('user_id');
         $question->save();
 
-        if ($request->input('type') == 'mcq' || $request->input('type') == 'radio') {
+        // store data to question_type == mcq
+        if ($request->input('type') == 'mcq') {
             $optionText1 = $request->input('txtoption');
             $optionText2 = $request->input('txtoption1');
-            
+
             // Concatenate both options
             $options = $optionText1 . ', ' . $optionText2;
-    
+
             $option = new Option();
             $option->option = $options;
             $option->question_id = $question->id; // Associate option with question
             $option->save();
         }
 
-        return redirect()->back()->with('success', 'Question created successfully.');
+        // Check if the question type requires additional checks custome range
+        if ($request->input('type') == 'customRange') {
+            // Ensure all necessary input fields are present
+            if ($request->has('min') && $request->has('max') && $request->has('mid')) {
+                $min = $request->input('min');
+                $max = $request->input('max');
+                $mid = $request->input('mid');
+
+                // Create a new Option instance
+                $option = new Option();
+                // Assign min, max, and mid values to the corresponding attributes
+                $option->min = $min;
+                $option->max = $max;
+                $option->mid = $mid;
+                // Associate option with the question
+                $option->question_id = $question->id;
+                // Save the option
+                $option->save();
+
+                return redirect()->back()->with('success', 'Question created successfully.');
+            }
+        }
+
+        // store data to question_type == radio
+        if ($request->input('type') == 'radio') {
+            $optionRadio1 = $request->input('radiobtn');
+            $optionRadio2 = $request->input('radiobtn1');
+
+            // Concatenate both options
+            $options = $optionRadio1 . ', ' . $optionRadio2;
+
+            $option = new Option();
+            $option->option = $options;
+            $option->question_id = $question->id; // Associate option with question
+            $option->save();
+        }
     }
 
     public function show(Request $request, $surveyId, $surveyTitle)

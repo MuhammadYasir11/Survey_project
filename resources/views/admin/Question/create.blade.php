@@ -141,21 +141,35 @@
                             <div id="radioContainer">
                                 <div class="form-check form-group">
                                     <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                        id="flexRadioDefault1">
-                                    <label class="form-check-label" for="flexRadioDefault1">
+                                        id="flexRadioDefault1" value="Option 2">
+                                    <div class="input-group">
                                         <input type="text" name="radiobtn" id="radiobtn" class="form-control"
                                             placeholder="Radio button">
-
-                                    </label>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-plus addOption" data-target="#optionsContainer"></i>
+                                            </span>
+                                            <span class="input-group-text">
+                                                <i class="fas fa-minus removeOption" data-target="#optionsContainer"></i>
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-check form-group">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                        id="flexRadioDefault2">
-                                    <label class="form-check-label" for="flexRadioDefault2">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault1"
+                                        id="flexRadioDefault1" value="Option 2">
+                                    <div class="input-group">
                                         <input type="text" name="radiobtn1" id="radiobtn1" class="form-control"
                                             placeholder="Radio button">
-
-                                    </label>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-plus addOption" data-target="#optionsContainer"></i>
+                                            </span>
+                                            <span class="input-group-text">
+                                                <i class="fas fa-minus removeOption" data-target="#optionsContainer"></i>
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <button type="button" class="btn btn-primary mt-2" id="addRadiobutton">Add
@@ -163,9 +177,22 @@
                         </div>
                         <div class="form-group" id="customRange" style="display: none;">
                             <div id="rangeContainer">
-                                <label for="customRange" class="form-label">Example range</label>
-                                <input type="range" id="range" name="range" class="form-range form-control"
-                                    min="0" max="5" id="customRange">
+                                <label for="customRange" class="form-label">Select Range</label>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <input type="text" id="min" name="min" class="form-control"
+                                            placeholder="Enter Min">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="text" id="max" name="max" class="form-control"
+                                            placeholder="Enter Max">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="text" id="mid" name="mid" class="form-control"
+                                            placeholder="Enter Mid">
+                                    </div>
+                                </div>
+
 
                             </div>
                         </div>
