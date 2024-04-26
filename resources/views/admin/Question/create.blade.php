@@ -487,7 +487,12 @@
                     url: '{{ route('question.store') }}', // Replace with your route
                     data: formData,
                     success: function(data) {
-                        // $('#questions').append();
+                        $("button[type=submit]").prop('disabled', false);
+
+                        if (response["status"] == true) {
+                            console.log("Redirect URL:", "{{ route('admin.home.list') }}");
+                            window.location.href = "{{ route('admin.home.list') }}";
+                        }
                     },
 
                 });

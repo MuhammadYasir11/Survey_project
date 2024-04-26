@@ -69,6 +69,12 @@ class QuestionController extends Controller
         $question->user_id = $request->input('user_id');
         $question->save();
 
+        session()->flash('success', 'Question Added successfully');
+        return response()->json([
+            'status' => true,
+            'message' => 'Question Added successfully'
+        ]);
+
         // store data to question_type == mcq
         if ($request->input('type') == 'mcq') {
             $optionText1 = $request->input('txtoption');
@@ -81,6 +87,17 @@ class QuestionController extends Controller
             $option->option = $options;
             $option->question_id = $question->id; // Associate option with question
             $option->save();
+
+            session()->flash('success', 'Question Added successfully');
+            return response()->json([
+                'status' => true,
+                'message' => 'Question Added successfully'
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ]);
         }
 
         // Check if the question type requires additional checks custome range
@@ -102,7 +119,16 @@ class QuestionController extends Controller
                 // Save the option
                 $option->save();
 
-                return redirect()->back()->with('success', 'Question created successfully.');
+                session()->flash('success', 'Question Added successfully');
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Question Added successfully'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'errors' => $validator->errors()
+                ]);
             }
         }
 
@@ -118,6 +144,17 @@ class QuestionController extends Controller
             $option->option = $options;
             $option->question_id = $question->id; // Associate option with question
             $option->save();
+
+            session()->flash('success', 'Question Added successfully');
+            return response()->json([
+                'status' => true,
+                'message' => 'Question Added successfully'
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ]);
         }
     }
 
