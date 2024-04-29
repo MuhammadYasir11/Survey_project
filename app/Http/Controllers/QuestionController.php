@@ -52,13 +52,14 @@ class QuestionController extends Controller
         $messages = [
             'type.in' => 'Invalid question type.',
         ];
-
+    
         $validator = Validator::make($request->all(), $rules, $messages);
-
+    
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-        // store data to question_type == text
+    
+        // Create a new Question instance
         $question = new Question();
         $question->question = $request->input('question');
         $question->question_type = $request->input('type');
@@ -68,46 +69,30 @@ class QuestionController extends Controller
         $question->survey_id = $request->input('survey_id');
         $question->user_id = $request->input('user_id');
         $question->save();
-
-        session()->flash('success', 'Question Added successfully');
-        return response()->json([
-            'status' => true,
-            'message' => 'Question Added successfully'
-        ]);
-
-        // store data to question_type == mcq
+    
+        // Store data when question_type == mcq
         if ($request->input('type') == 'mcq') {
-            $optionText1 = $request->input('txtoption');
-            $optionText2 = $request->input('txtoption1');
-
-            // Concatenate both options
-            $options = $optionText1 . ', ' . $optionText2;
-
-            $option = new Option();
-            $option->option = $options;
-            $option->question_id = $question->id; // Associate option with question
-            $option->save();
-
-            session()->flash('success', 'Question Added successfully');
-            return response()->json([
-                'status' => true,
-                'message' => 'Question Added successfully'
-            ]);
-        } else {
-            return response()->json([
-                'status' => false,
-                'errors' => $validator->errors()
-            ]);
+            // Save the options
+            if ($request->has('options')) {
+                $options = $request->input('options');
+                foreach ($options as $optionText) {
+                    // Create a new Option instance for each option
+                    $option = new Option();
+                    $option->option = $optionText; // Save the option text
+                    $option->question_id = $question->id; // Associate option with question
+                    $option->save();
+                }
+            }
         }
-
-        // Check if the question type requires additional checks custome range
+    
+        // Check if the question type requires additional checks (custom range)
         if ($request->input('type') == 'customRange') {
             // Ensure all necessary input fields are present
             if ($request->has('min') && $request->has('max') && $request->has('mid')) {
                 $min = $request->input('min');
                 $max = $request->input('max');
                 $mid = $request->input('mid');
-
+    
                 // Create a new Option instance
                 $option = new Option();
                 // Assign min, max, and mid values to the corresponding attributes
@@ -118,12 +103,6 @@ class QuestionController extends Controller
                 $option->question_id = $question->id;
                 // Save the option
                 $option->save();
-
-                session()->flash('success', 'Question Added successfully');
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Question Added successfully'
-                ]);
             } else {
                 return response()->json([
                     'status' => false,
@@ -131,32 +110,28 @@ class QuestionController extends Controller
                 ]);
             }
         }
-
-        // store data to question_type == radio
+    
+        // Store data when question_type == radio
         if ($request->input('type') == 'radio') {
             $optionRadio1 = $request->input('radiobtn');
             $optionRadio2 = $request->input('radiobtn1');
-
+    
             // Concatenate both options
             $options = $optionRadio1 . ', ' . $optionRadio2;
-
+    
             $option = new Option();
             $option->option = $options;
             $option->question_id = $question->id; // Associate option with question
             $option->save();
-
-            session()->flash('success', 'Question Added successfully');
-            return response()->json([
-                'status' => true,
-                'message' => 'Question Added successfully'
-            ]);
-        } else {
-            return response()->json([
-                'status' => false,
-                'errors' => $validator->errors()
-            ]);
         }
+    
+        session()->flash('success', 'Question Added successfully');
+        return response()->json([
+            'status' => true,
+            'message' => 'Question Added successfully'
+        ]);
     }
+    
 
     public function show(Request $request, $surveyId, $surveyTitle)
     {

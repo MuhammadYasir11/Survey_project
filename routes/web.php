@@ -63,6 +63,10 @@ Route::get('/admin/question-create/{surveyId}/{survey_title}', [SurveyController
 //Question Routes
 Route::get('question/create/{survey}', [QuestionController::class, 'create'])->name('admin.Question.create');
 Route::post('/question', [QuestionController::class, 'store'])->name('question.store');
+Route::get('/question/{id}/edit', [HomeController::class, 'editSurvey'])->name('admin.home.edit');
+Route::put('/question/{id}', [HomeController::class, 'updateSurvey'])->name('admin.home.update');
+Route::delete('/surveys/{id}', [HomeController::class, 'deleteSurvey'])->name('admin.home.delete');
+
 
 // Home Routes
 Route::get('home/list', [HomeController::class, 'index'])->name('admin.home.list');

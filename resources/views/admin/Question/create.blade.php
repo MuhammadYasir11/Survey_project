@@ -97,7 +97,7 @@
                                 <div class="form-group form-check ">
                                     <input type="checkbox" class="form-check-input" id="exampleCheck1">
                                     <div class="input-group">
-                                        <input type="text" name="txtoption" id="txtoption" placeholder="Multiple choice"
+                                        <input type="text" name="options[]" id="options" placeholder="Multiple choice"
                                             class="form-control">
                                         <div class="input-group-append">
                                             <span class="input-group-text">
@@ -112,7 +112,7 @@
                                 <div class="form-group form-check ">
                                     <input type="checkbox" class="form-check-input" id="exampleCheck2">
                                     <div class="input-group">
-                                        <input type="text" id="txtoption1" name="txtoption1" class="form-control"
+                                        <input type="text" id="options" name="options[]" class="form-control option-input"
                                             placeholder="Multiple choice">
                                         <div class="input-group-append">
                                             <span class="input-group-text">
@@ -396,32 +396,32 @@
                 }
             });
 
-            const addOptionButton = document.getElementById('addOption');
-            addOptionButton.addEventListener('click', function() {
-                const optionsContainer = document.getElementById('optionsContainer');
+            // const addOptionButton = document.getElementById('addOption');
+            // addOptionButton.addEventListener('click', function() {
+            //     const optionsContainer = document.getElementById('optionsContainer');
 
-                // Create wrapper div for the option
-                const optionWrapper = document.createElement('div');
-                optionWrapper.className = 'form-group form-check';
+            //     // Create wrapper div for the option
+            //     const optionWrapper = document.createElement('div');
+            //     optionWrapper.className = 'form-group form-check';
 
-                // Create checkbox
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.className = 'form-check-input';
+            //     // Create checkbox
+            //     const checkbox = document.createElement('input');
+            //     checkbox.type = 'checkbox';
+            //     checkbox.className = 'form-check-input';
 
-                // Create textbox
-                const textbox = document.createElement('input');
-                textbox.type = 'text';
-                textbox.className = 'form-control';
-                textbox.placeholder = 'Multiple choice';
+            //     // Create textbox
+            //     const textbox = document.createElement('input');
+            //     textbox.type = 'text';
+            //     textbox.className = 'form-control';
+            //     textbox.placeholder = 'Multiple choice';
 
-                // Append checkbox and textbox to wrapper
-                optionWrapper.appendChild(checkbox);
-                optionWrapper.appendChild(textbox);
+            //     // Append checkbox and textbox to wrapper
+            //     optionWrapper.appendChild(checkbox);
+            //     optionWrapper.appendChild(textbox);
 
-                // Append wrapper to options container
-                optionsContainer.appendChild(optionWrapper);
-            });
+            //     // Append wrapper to options container
+            //     optionsContainer.appendChild(optionWrapper);
+            // });
 
             const addRadiobuttonButton = document.getElementById('addRadiobutton');
             addRadiobuttonButton.addEventListener('click', function() {
@@ -467,47 +467,62 @@
         </a>
     </script>
 
-    <script>
-        $(document).ready(function() {
-            $('#QuestionForm').submit(function(e) {
-                e.preventDefault();
-                var formData = $(this).serializeArray();
-                formData.push({
-                    name: "survey_id",
-                    value: "{{ $survey->id }}"
-                });
-                formData.push({
-                    name: "user_id",
-                    value: "{{ $user->id }}"
-                });
-                console.log(formData);
+<script>
+   $(document).ready(function() {
+    // Function to add option dynamically
+    $('#addOption').click(function() {
+        // Clone the first option input group
+        var newOption = $('#optionsContainer .form-group:first').clone();
 
-                $.ajax({
-                    type: 'POST',
-                    url: '{{ route('question.store') }}', // Replace with your route
-                    data: formData,
-                    success: function(data) {
-                        $("button[type=submit]").prop('disabled', false);
+        // Clear the input value in the cloned option
+        newOption.find('input[type="text"]').val('');
+        // Append the cloned option input group to the options container
+        $('#optionsContainer').append(newOption);
+    });
 
-                        if (response["status"] == true) {
-                            console.log("Redirect URL:", "{{ route('admin.home.list') }}");
-                            window.location.href = "{{ route('admin.home.list') }}";
-                        }
-                    },
+    // Function to remove option dynamically
+    $(document).on('click', '.removeOption', function() {
+        // Remove the parent form group of the clicked remove button
+        $(this).closest('.form-group').remove();
+    });
 
-                });
-            });
+    // Function to handle form submission
+    $('#QuestionForm').submit(function(e) {
+        e.preventDefault(); // Prevent default form submission
+
+        // Serialize the form data including dynamically added inputs
+        var formData = $(this).serialize();
+
+        // Send form data via AJAX
+        $.ajax({
+            type: 'POST',
+            url: '{{ route('question.store') }}',
+            data: formData,
+            success: function(data) {
+                // Handle success response
+                console.log("Question Added successfully");
+            },
+            error: function(xhr, status, error) {
+                // Handle error response
+                console.error("An error occurred:", error);
+            }
         });
+    });
+});
+
     </script>
+
     <script>
         $(document).ready(function() {
             $('.addOption').click(function() {
                 // Clone the form group containing checkbox and text input
-                var newOption = $(this).closest('.form-group').clone();
+                var newOption = $('#optionsContainer .form-group:first').clone();
 
                 // Clear values of cloned input fields
                 newOption.find('input[type="text"]').val('');
                 newOption.find('input[type="checkbox"]').prop('checked', false);
+
+                $('#optionsContainer').append(newOption);
 
                 // Append the cloned form group to the container
                 $(this).closest('.form-group').after(newOption);
@@ -519,5 +534,11 @@
                 }
             });
         });
+
+
+
+
+      
+
     </script>
 @endsection

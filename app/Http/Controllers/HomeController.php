@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Option;
+use App\Models\Question;
 use App\Models\Survey;
 use Illuminate\Http\Request;
 
@@ -21,13 +23,35 @@ class HomeController extends Controller
     public function dashboard($id)
     {
         $surveyTitle = Survey::findOrFail($id)->survey_title;
-        return view('admin.home.Surveydashboard', compact('surveyTitle', 'id'));
+        $questions = Question::where('survey_id', $id)->get();
+        
+        // Fetch options for all questions
+        $options = Option::whereIn('question_id', $questions->pluck('id'))->get();
+        
+        return view('admin.home.Surveydashboard', compact('surveyTitle', 'id', 'questions', 'options'));
     }
+    
 
-    public function edit($id)
+    public function editSurvey($id)
     {
         $survey = Survey::findOrFail($id);
-        $categories = Category::all();
-        return view('admin.survey.edit', compact('survey', 'categories'));
+        $questions = Question::where('id', $id)->get();
+        return view('admin.home.edit', compact('survey', 'questions'));
+    }
+
+    public function updateSurvey(Request $request, $id)
+    {
+        // Validation and updating logic
+        $survey = Survey::findOrFail($id);
+        // Update survey with data from $request
+        return redirect()->route('admin.dashboard', ['id' => $id])->with('success', 'Survey updated successfully');
+    }
+    
+    public function deleteSurvey($id)
+    {
+        // Find survey by ID and delete it
+        $survey = Survey::findOrFail($id);
+        $survey->delete();
+        return redirect()->route('admin.index')->with('success', 'Survey deleted successfully');
     }
 }
