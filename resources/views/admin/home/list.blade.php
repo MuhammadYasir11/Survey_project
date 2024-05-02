@@ -57,10 +57,11 @@
                                         <td>
                                             <div class="dropdown">
                                                 <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                                    id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                                    aria-expanded="false">
-                                                    Publish
-                                                </button>
+                                                id="dropdownMenuButton" data-toggle="modal" data-target="#publishModal">
+                                            Publish
+                                        </button>
+
+
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                     <a class="dropdown-item" href="#">Student</a>
                                                     <a class="dropdown-item" href="#">Teacher</a>
@@ -111,4 +112,12 @@
             });
         });
     </script>
+
+<script>
+    // JavaScript to handle the confirmation and publishing
+    document.getElementById('confirmPublish').addEventListener('click', function () {
+        alert('Survey published successfully!');
+        window.location.href = "{{ route('student.page') }}";
+    });
+</script>
 @endsection
