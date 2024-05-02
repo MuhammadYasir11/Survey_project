@@ -69,8 +69,9 @@ Route::post('/question', [QuestionController::class, 'store'])->name('question.s
 // Home Routes
 Route::get('home/list', [HomeController::class, 'index'])->name('admin.home.list');
 Route::get('home/dashboard/{id}', [HomeController::class, 'dashboard'])->name('admin.home.Surveydashboard');
+Route::put('home/dashboard/{id}', [HomeController::class, 'dashboard'])->name('admin.home.Surveydashboard');
 Route::get('survey/{id}/edit', [SurveyController::class, 'edit'])->name('admin.Survey.edit');
 
 Route::get('/question/edit/{id}', [HomeController::class, 'editQuestion'])->name('admin.home.edit');
-Route::put('/question/{id}', [HomeController::class, 'updateQuestion'])->name('admin.home.update');
+Route::put('/question/{id}', [HomeController::class, 'updateQuestion'])->name('admin.update');
 Route::delete('/questions/{id}', [HomeController::class, 'deleteSurvey'])->name('admin.home.delete');

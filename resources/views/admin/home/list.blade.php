@@ -40,8 +40,9 @@
                                     <tr>
                                         <td>Draft</td>
                                         <td>
-                                            <a
-                                                href="{{ route('admin.home.Surveydashboard', ['id' => $survey->id]) }}">{{ $survey->survey_title }}</a>
+                                            <a href="{{ route('admin.home.Surveydashboard', ['id' => $survey->id]) }}">{{ $survey->survey_title }}</a>
+
+                                               
                                         </td>
                                         <td>{{ $survey->created_at }}</td>
                                         <td>
