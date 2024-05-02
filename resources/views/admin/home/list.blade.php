@@ -3,15 +3,17 @@
 
     <!-- Content Header (Page header) -->
     <section class="content-header">
-        <div class="container-fluid my-2">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Home</h1>
-                </div>
-            </div>
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <a href="{{ route('admin.Survey.create') }}" class="btn btn-primary">Create Survey</a>
+        <div class="card">
+            <div class="card-body">
+                <div class="container-fluid my-2">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>Home</h1>
+                        </div>
+                        <div class="col-sm-6 text-right">
+                            <a href="{{ route('admin.Survey.create') }}" class="btn btn-primary">Create Survey</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
