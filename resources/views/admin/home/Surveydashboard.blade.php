@@ -3,7 +3,7 @@
 @section('content')
     <section class="content-header">
         <div class="container-fluid">
-            <div class="row mb-3">
+            <div class="row">
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-body">
@@ -22,7 +22,6 @@
                     <button type="button" class="btn btn-secondary mr-2"
                         onclick="window.location.href='{{ route('admin.Question.create', ['survey' => $id]) }}'">Edit
                         Design</button>
-                    <button type="button" class="btn btn-secondary mr-2">Add More Questions</button>
                     <button type="button" class="btn btn-info"
                         onclick="window.location.href='{{ route('admin.Survey.edit', ['id' => $id]) }}'">Edit
                         Survey</button>
@@ -63,7 +62,7 @@
                 </div>
             </div>
 
-            <div class="row mt-3">
+            <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
@@ -71,8 +70,10 @@
                                 <div class="mb-4">
                                     <strong>Q{{ $loop->iteration }}: {{ $question->question }}</strong>
                                     <div class="float-right">
-                                        <a href="{{ route('admin.home.edit', ['id' => $question->id]) }}" class="mr-2"><i class="fas fa-pencil-alt"></i></a>
-                                        <a href="#" class="text-danger"><i class="fas fa-trash-alt"></i></a>
+                                        <a href="{{ route('admin.home.edit', ['id' => $question->id]) }}" class="mr-2"><i
+                                                class="fas fa-pencil-alt"></i></a>
+                                        <a href="#" class="text-danger delete-question"
+                                            data-question-id="{{ $question->id }}"><i class="fas fa-trash-alt"></i></a>
                                     </div>
                                     @if ($question->question_type === 'mcq')
                                         <div class="row mt-2">
@@ -96,11 +97,32 @@
                                         @php
                                             $answer = $question->where('id', $question->id)->first();
                                         @endphp
-                                        <input type="text" class="form-control" name="textbox_question_{{ $question->id }}"
+                                        <input type="text" class="form-control"
+                                            name="textbox_question_{{ $question->id }}"
                                             value="{{ $answer ? $answer->answer : '' }}" readonly>
+                                    @elseif ($question->question_type === 'radio')
+                                        <div class="row mt-2">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    @foreach ($question->options as $option)
+                                                        <div class="col-md-6 mb-2">
+                                                            <div class="form-check">
+                                                                <input type="radio" class="form-check-input"
+                                                                    id="option{{ $option->id }}"
+                                                                    name="radio_question_{{ $question->id }}"
+                                                                    value="{{ $option->id }}">
+                                                                <label class="form-check-label option-label option-font"
+                                                                    for="option{{ $option->id }}">{{ $option->option }}</label>
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
                                     @endif
                                 </div>
                             @endforeach
+
                         </div>
                     </div>
                 </div>

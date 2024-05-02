@@ -113,16 +113,16 @@ class QuestionController extends Controller
     
         // Store data when question_type == radio
         if ($request->input('type') == 'radio') {
-            $optionRadio1 = $request->input('radiobtn');
-            $optionRadio2 = $request->input('radiobtn1');
-    
-            // Concatenate both options
-            $options = $optionRadio1 . ', ' . $optionRadio2;
-    
-            $option = new Option();
-            $option->option = $options;
-            $option->question_id = $question->id; // Associate option with question
-            $option->save();
+            if ($request->has('radioOption')) {
+                $radioOption = $request->input('radioOption');
+                foreach ($radioOption as $option) {
+                  // Create a new Option instance for each option
+                  $newOption = new Option();
+                  $newOption->option = $option;
+                  $newOption->question_id = $question->id; // Associate option with question
+                  $newOption->save();
+                }
+            }
         }
     
         session()->flash('success', 'Question Added successfully');

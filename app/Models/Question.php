@@ -21,4 +21,9 @@ class Question extends Model
         return $this->hasMany(Option::class);
     }
 
+    public function selectedOptions()
+{
+    return $this->hasMany(SelectedOption::class); // Assuming you have a SelectedOption model
+}
+
 }

@@ -143,14 +143,14 @@
                                     <input class="form-check-input" type="radio" name="flexRadioDefault"
                                         id="flexRadioDefault1" value="Option 2">
                                     <div class="input-group">
-                                        <input type="text" name="radiobtn" id="radiobtn" class="form-control"
+                                        <input type="text" name="radioOption[]" id="radioOption" class="form-control"
                                             placeholder="Radio button">
                                         <div class="input-group-append">
                                             <span class="input-group-text">
-                                                <i class="fas fa-plus addOption" data-target="#optionsContainer"></i>
+                                                <i class="fas fa-plus addRadio" data-target="#optionsContainer"></i>
                                             </span>
                                             <span class="input-group-text">
-                                                <i class="fas fa-minus removeOption" data-target="#optionsContainer"></i>
+                                                <i class="fas fa-minus removeRadio" data-target="#optionsContainer"></i>
                                             </span>
                                         </div>
                                     </div>
@@ -159,20 +159,20 @@
                                     <input class="form-check-input" type="radio" name="flexRadioDefault1"
                                         id="flexRadioDefault1" value="Option 2">
                                     <div class="input-group">
-                                        <input type="text" name="radiobtn1" id="radiobtn1" class="form-control"
+                                        <input type="text" name="radioOption[]" id="radioOption" class="form-control"
                                             placeholder="Radio button">
                                         <div class="input-group-append">
                                             <span class="input-group-text">
-                                                <i class="fas fa-plus addOption" data-target="#optionsContainer"></i>
+                                                <i class="fas fa-plus addRadiobutton" data-target="#optionsContainer"></i>
                                             </span>
                                             <span class="input-group-text">
-                                                <i class="fas fa-minus removeOption" data-target="#optionsContainer"></i>
+                                                <i class="fas fa-minus removeRadio" data-target="#optionsContainer"></i>
                                             </span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-primary mt-2" id="addRadiobutton">Add
+                            <button type="button" class="btn btn-primary mt-2" id="addRadiobutton" hidden>Add
                                 RadioButton</button>
                         </div>
                         <div class="form-group" id="customRange" style="display: none;">
@@ -232,12 +232,15 @@
                 // Add textboxes based on the selected scale value
                 for (let i = 1; i <= scaleValue; i++) {
                     const optionWrapper = document.createElement('div');
-                    optionWrapper.className = 'form-group form-check';
+                    optionWrapper.className = 'form-group form-check d-flex ';
 
                     const checkbox = document.createElement('input');
                     checkbox.type = 'checkbox';
                     checkbox.className = 'form-check-input';
                     checkbox.id = 'exampleCheck' + i;
+
+                    const textboxWrapper = document.createElement('div'); // Create a wrapper for textbox and icons
+                    textboxWrapper.className = 'input-group';
 
                     const textbox = document.createElement('input');
                     textbox.type = 'text';
@@ -246,7 +249,7 @@
 
                     // Plus icon
                     const plusIcon = document.createElement('span');
-                    plusIcon.className = 'input-group-text addOption';
+                    plusIcon.className = 'input-group-text addOption d-flex';
                     plusIcon.innerHTML = '<i class="fas fa-plus"></i>';
 
                     // Minus icon add 
@@ -277,7 +280,7 @@
             const scaleSelect = document.getElementById('scale');
             const answerSelect = document.getElementById('answerSelect');
             const radioContainer = document.getElementById('radioContainer');
-            const addOptionButton = document.getElementById('addOption');
+            const addOptionButton = document.getElementById('addRadiobutton');
 
             scaleSelect.addEventListener('change', function() {
                 const scaleValue = parseInt(scaleSelect.value);
@@ -300,6 +303,16 @@
                     textbox.type = 'text';
                     textbox.className = 'form-control';
                     textbox.placeholder = 'Radio button ' + i;
+
+                     // Plus icon
+                     const plusIcon = document.createElement('span');
+                    plusIcon.className = 'input-group-text addOption d-flex';
+                    plusIcon.innerHTML = '<i class="fas fa-plus"></i>';
+
+                    // Minus icon add 
+                    const minusIcon = document.createElement('span');
+                    minusIcon.className = 'input-group-text removeOption';
+                    minusIcon.innerHTML = '<i class="fas fa-minus"></i>';
 
                     // Update the textbox value when answer type is selected
                     answerSelect.addEventListener('change', function() {
@@ -360,6 +373,7 @@
             const textboxDiv = document.getElementById('textbox');
             const radiobuttonDiv = document.getElementById('radiobutton');
             const rangeContainerDiv = document.getElementById('customRange');
+            const addOptionButton = document.getElementById('addOption');
 
             typeSelect.addEventListener('change', function() {
                 if (typeSelect.value === 'mcq') {
@@ -375,6 +389,7 @@
                     rangeContainerDiv.style.display = 'none';
                 } else if (typeSelect.value === 'radio') {
                     optionsDiv.style.display = 'block';
+                    addOptionButton.style.display = 'block';
                     optionsContainer.style.display = 'none';
                     textboxDiv.style.display = 'none';
                     radiobuttonDiv.style.display = 'block';
@@ -423,39 +438,39 @@
             //     optionsContainer.appendChild(optionWrapper);
             // });
 
-            const addRadiobuttonButton = document.getElementById('addRadiobutton');
-            addRadiobuttonButton.addEventListener('click', function() {
-                const radioContainer = document.getElementById('radioContainer');
-                // Create container div for the radio button and its label
-                const containerDiv = document.createElement('div');
-                containerDiv.className = 'form-check form-group';
+            // const addRadiobuttonButton = document.getElementById('addRadiobutton');
+            // addRadiobuttonButton.addEventListener('click', function() {
+            //     const radioContainer = document.getElementById('radioContainer');
+            //     // Create container div for the radio button and its label
+            //     const containerDiv = document.createElement('div');
+            //     containerDiv.className = 'form-check form-group';
 
-                // Create radio button
-                const radioButton = document.createElement('input');
-                radioButton.type = 'radio';
-                radioButton.className = 'form-check-input';
-                radioButton.name = 'flexRadioDefault';
+            //     // Create radio button
+            //     const radioButton = document.createElement('input');
+            //     radioButton.type = 'radio';
+            //     radioButton.className = 'form-check-input';
+            //     radioButton.name = 'flexRadioDefault';
 
-                // Create label for radio button
-                const label = document.createElement('label');
-                label.className = 'form-check-label';
+            //     // Create label for radio button
+            //     const label = document.createElement('label');
+            //     label.className = 'form-check-label';
 
-                // Create text input for labeling the radio button
-                const labelText = document.createElement('input');
-                labelText.type = 'text';
-                labelText.className = 'form-control';
-                labelText.placeholder = 'Radio button';
+            //     // Create text input for labeling the radio button
+            //     const labelText = document.createElement('input');
+            //     labelText.type = 'text';
+            //     labelText.className = 'form-control';
+            //     labelText.placeholder = 'Radio button';
 
-                // Append radio button and text input to the label
-                label.appendChild(radioButton);
-                label.appendChild(labelText);
+            //     // Append radio button and text input to the label
+            //     label.appendChild(radioButton);
+            //     label.appendChild(labelText);
 
-                // Append label to the container div
-                containerDiv.appendChild(label);
+            //     // Append label to the container div
+            //     containerDiv.appendChild(label);
 
-                // Append container div to the radio container
-                radioContainer.appendChild(containerDiv);
-            });
+            //     // Append container div to the radio container
+            //     radioContainer.appendChild(containerDiv);
+            // });
 
         });
     </script>
@@ -480,18 +495,13 @@
         $('#optionsContainer').append(newOption);
     });
 
-    // Function to remove option dynamically
-    $(document).on('click', '.removeOption', function() {
-        // Remove the parent form group of the clicked remove button
-        $(this).closest('.form-group').remove();
-    });
-
     // Function to handle form submission
     $('#QuestionForm').submit(function(e) {
         e.preventDefault(); // Prevent default form submission
 
         // Serialize the form data including dynamically added inputs
         var formData = $(this).serialize();
+
 
         // Send form data via AJAX
         $.ajax({
@@ -541,4 +551,29 @@
       
 
     </script>
+
+<script>
+    $(document).ready(function() {
+        $('.addRadiobutton').click(function() {
+            // Clone the form group containing checkbox and text input
+            var newOption = $('#radioContainer .form-group:first').clone();
+
+            // Clear values of cloned input fields
+            newOption.find('input[type="text"]').val('');
+            newOption.find('input[type="radio"]').prop('radio', false);
+
+            $('#radioContainer').append(newOption);
+
+            // Append the cloned form group to the container
+            $(this).closest('.form-group').after(newOption);
+        });
+        // Functionality for removing option
+        $(document).on('click', '.removeRadio', function() {
+            if ($('#radioContainer .form-group').length > 1) {
+                $(this).closest('.form-group').remove();
+            }
+        });
+    });
+
+</script>
 @endsection
