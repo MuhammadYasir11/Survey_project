@@ -43,8 +43,6 @@
                                         <td>Draft</td>
                                         <td>
                                             <a href="{{ route('admin.home.Surveydashboard', ['id' => $survey->id]) }}">{{ $survey->survey_title }}</a>
-
-                                               
                                         </td>
                                         <td>{{ $survey->created_at }}</td>
                                         <td>
@@ -57,11 +55,9 @@
                                         <td>
                                             <div class="dropdown">
                                                 <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                                id="dropdownMenuButton" data-toggle="modal" data-target="#publishModal">
-                                            Publish
-                                        </button>
-
-
+                                                    id="dropdownMenuButton" data-toggle="modal" data-target="#publishModal">
+                                                    Publish
+                                                </button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                     <a class="dropdown-item" href="#">Student</a>
                                                     <a class="dropdown-item" href="#">Teacher</a>
@@ -72,21 +68,38 @@
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="5"> Record Not Found</td>
+                                    <td colspan="5">Record Not Found</td>
                                 </tr>
                             @endif
                         </tbody>
                     </table>
                 </div>
             </div>
-
-
-
-
         </div>
         <!-- /.card -->
     </section>
     <!-- /.content -->
+
+    <div class="modal fade" id="publishModal" tabindex="-1" role="dialog" aria-labelledby="publishModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="publishModalLabel">Confirmation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to publish the survey now?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirmPublish">Publish</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 @endsection
 
@@ -113,11 +126,11 @@
         });
     </script>
 
-<script>
-    // JavaScript to handle the confirmation and publishing
-    document.getElementById('confirmPublish').addEventListener('click', function () {
-        alert('Survey published successfully!');
-        window.location.href = "{{ route('student.page') }}";
-    });
-</script>
+    <script>
+        // JavaScript to handle the confirmation and publishing
+        document.getElementById('confirmPublish').addEventListener('click', function() {
+            alert('Survey published successfully!');
+            window.location.href = "{{ route('front.Survey.view') }}";
+        });
+    </script>
 @endsection

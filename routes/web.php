@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\front\HomeController as FrontHomeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\SurveyController;
@@ -75,3 +76,8 @@ Route::get('survey/{id}/edit', [SurveyController::class, 'edit'])->name('admin.S
 Route::get('/question/edit/{id}', [HomeController::class, 'editQuestion'])->name('admin.home.edit');
 Route::put('/question/{id}', [HomeController::class, 'updateQuestion'])->name('admin.update');
 Route::delete('/questions/{id}', [HomeController::class, 'deleteSurvey'])->name('admin.home.delete');
+
+
+//front servey routes
+// routes/web.php
+Route::get('/surveys', [FrontHomeController::class, 'index'])->name('front.Survey.view');
