@@ -24,9 +24,8 @@
         <!-- Default box -->
         <div class="container-fluid">
             @include('admin.message')
-            <div class="card">
-
-                <div class="card-body table-responsive p-0">
+            <div class="card" style="width: 100%; margin-right: 4%">
+                <div class="card-body table-responsive p-3">
                     <table class="table table-hover text-nowrap" id="categoryList">
                         <thead>
                             <tr>

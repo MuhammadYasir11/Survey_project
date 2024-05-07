@@ -4,11 +4,11 @@ use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\front\HomeController as FrontHomeController;
+use App\Http\Controllers\HighChatController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\SurveyController;
 use Illuminate\Support\Facades\Route;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -34,13 +34,15 @@ Route::group(['prefix' => 'admin'], function () {
     });
     Route::group(['middleware' => 'admin.auth'], function () {
 
-        Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('admin.dashboard');
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
         Route::get('/logout', [DashboardController::class, 'logout'])->name('admin.logout');
     });
 });
 
 Route::get('layouts', [DashboardController::class, 'layout'])->name('layouts.app');
 // Route::get('dashboard', [DashboardController::class,'dashboard'])->name('admin.dashboard');
+
+Route::get('/chart', [HighchatController::class, 'handleChart'])->name('admin.Chart');
 
 //Category Routes
 Route::get('list', [CategoryController::class, 'index'])->name('admin.Category.list');
@@ -65,6 +67,11 @@ Route::get('/admin/question-create/{surveyId}/{survey_title}', [SurveyController
 Route::get('question/create/{survey}', [QuestionController::class, 'create'])->name('admin.Question.create');
 Route::post('/question', [QuestionController::class, 'store'])->name('question.store');
 
+Route::post('/send-survey', function () {
+    // Forward the request to the send_survey.php file
+    return response()->file(public_path('send_survey.blade.php'));
+});
+
 
 
 // Home Routes
@@ -81,3 +88,5 @@ Route::delete('/questions/{id}', [HomeController::class, 'deleteSurvey'])->name(
 //front servey routes
 // routes/web.php
 Route::get('/surveys', [FrontHomeController::class, 'index'])->name('front.Survey.view');
+Route::post('/question/store', [FrontHomeController::class, 'store'])->name('response.store');
+

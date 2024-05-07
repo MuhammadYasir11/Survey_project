@@ -1,16 +1,14 @@
 @extends('admin/layouts.app')
 @section('content')
+   
     <!-- Content Header (Page header) -->
     <section class="content-header">
-
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1>Dashboard</h1>
-
                 </div>
                 <div class="col-sm-6">
-
                 </div>
             </div>
         </div>
@@ -24,7 +22,7 @@
                 <div class="col-lg-4 col-6">
                     <div class="small-box card">
                         <div class="inner">
-                            <h3>150</h3>
+                            <h3>{{ $surveyCount }}</h3>
                             <p>Total Survey</p>
                         </div>
                         <div class="icon">
@@ -38,7 +36,7 @@
                 <div class="col-lg-4 col-6">
                     <div class="small-box card">
                         <div class="inner">
-                            <h3>50</h3>
+                            <h3>{{ $userCount }}</h3>
                             <p>Total Users</p>
                         </div>
                         <div class="icon">
@@ -67,8 +65,7 @@
     </section>
     <!-- /.content -->
 @endsection
+
 @section('customerJs')
-    <script>
-        console.log("Hellow");
-    </script>
+
 @endsection

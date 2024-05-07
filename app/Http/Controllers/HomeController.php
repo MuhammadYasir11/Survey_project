@@ -16,11 +16,8 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $surveys = Survey::all();
-        // if ($request->has('keyword')) {
-        //     $surveys = $surveys->where('survey_title', 'like', '%' . $request->input('keyword') . '%');
-        // } 
-        // $surveys = $surveys->paginate(10);
-        return view('admin.home.list', compact('surveys'));
+        $users = User::all();
+        return view('admin.home.list', compact('surveys', 'users'));
     }
 
     public function dashboard($id)
@@ -47,7 +44,7 @@ class HomeController extends Controller
         $survey = Survey::findOrFail($question->survey_id);
         $surveyTitle = $survey->survey_title;
 
-        return view('admin.home.edit', compact('question', 'user', 'options', 'question_type', 'surveyTitle','id'));
+        return view('admin.home.edit', compact('question', 'user', 'options', 'question_type', 'surveyTitle', 'id'));
     }
 
 
@@ -59,24 +56,24 @@ class HomeController extends Controller
             'question' => 'required|string',
             'type' => 'required|in:mcq,text-box,radio,customRange',
         ];
-    
+
         // Validate the request data
         $validator = Validator::make($request->all(), $rules);
-    
+
         // Check if validation fails
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-    
+
         // Find the question by ID
         $question = Question::findOrFail($id);
-    
+
         // Update basic question details
         $question->question = $request->input('question');
         $question->question_type = $request->input('type');
         $question->answer = $request->input('add_text') ?? null; // Ensure null if not provided
         $question->save();
-    
+
         // Store options based on question type
         if ($request->input('type') === 'mcq') {
             $options = $request->input('options', []);
@@ -99,12 +96,12 @@ class HomeController extends Controller
             $question->options()->delete(); // Delete existing options
             $question->options()->create(['min' => $min, 'max' => $max, 'mid' => $mid]);
         }
-    
+
         // Flash success message and redirect
         session()->flash('success', 'Question updated successfully');
-        return redirect()->route('admin.home.Surveydashboard',['id' => $id]);
+        return redirect()->route('admin.home.Surveydashboard', ['id' => $id]);
     }
-    
+
 
 
     public function deleteSurvey($id)

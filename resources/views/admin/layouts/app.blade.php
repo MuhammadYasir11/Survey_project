@@ -103,29 +103,27 @@
     <script src="{{ asset('admin-assets/js/adminlte.min.js') }}"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('admin-assets/js/demo.js') }}"></script>
+
+    
+
     {{-- dataTables --}}
     <script src="https://cdn.datatables.net/2.0.5/js/dataTables.min.js" defer></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-sTy1mJ4I/LAjFCCdEB4RAvPSmRCb3CU7YqodohyeOLo=" crossorigin="anonymous"></script>
+
+  
 
     <script type="text/javascript">
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
-
         });
 
         $(document).ready(function() {
             $(".summernote").summernote({
                 height: 250
             });
-
-
-
-
-
-
         });
     </script>
 

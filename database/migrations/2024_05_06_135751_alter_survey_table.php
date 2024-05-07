@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('response', function (Blueprint $table) {
-            $table->string('user_name')->after('text_respone');
-            $table->string('user_email')->after('user_name');
+        Schema::table('survey',function (blueprint $table)
+        {
+            $table->string('Publish_type')->nullable()->after('survey_title');
         });
     }
 
@@ -26,9 +26,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('response', function (Blueprint $table) {
-            $table->dropColumn('text_respone');
-            $table->dropColumn('user_name');
+        Schema::table('survey',function (blueprint $table)
+        {
+            $table->dropColumn('Publish_type');
         });
     }
 };
